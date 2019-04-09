@@ -9,12 +9,24 @@ module.exports = (env, argv) => ({
         'webpack/hot/only-dev-server',
         './src/index.js',
     ],
-
     output: {
         path: path.resolve(__dirname, 'dist'),
         // publicPath allows you to specify the base path for all the assets within your application.
         publicPath: '/',
         filename: '[name].bundle.js',
+    },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    chunks: 'initial',
+                    name: 'vendor',
+                    test: 'vendor',
+                    enforce: true
+                },
+            }
+        },
+        runtimeChunk: true
     },
     resolve: {
         extensions: ['*', '.js', '.jsx']
@@ -43,7 +55,6 @@ module.exports = (env, argv) => ({
             }
         ]
     },
-
     plugins: [
         new HtmlWebPackPlugin({
             template: path.join(sourceDir, "index.html"),
